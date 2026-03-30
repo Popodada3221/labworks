@@ -6,7 +6,7 @@ COPY src/Core/*.csproj Core/
 COPY src/Infrastructure/*.csproj Infrastructure/
 COPY src/Api/*.csproj Api/
 
-RUN dotnet restore Api/Api.csproj --retry 5 --ignore-failed-sources
+RUN dotnet restore Api/Api.csproj
 
 COPY src/ .
 WORKDIR /src/Api
