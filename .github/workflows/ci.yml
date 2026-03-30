@@ -66,16 +66,16 @@ jobs:
           cache-to: type=gha,mode=max
 
   deploy-on-local-linux:
-  name: Deploy to local Linux device
-  needs: build-and-push          # Дожидаемся успешной сборки и пуша образа
-  runs-on: self-hosted           # Запускаем на вашем локальном раннере
-  steps:
-    - name: Checkout code (optional)
-      uses: actions/checkout@v4  # Можно получить docker-compose.yml из репозитория
+    name: Deploy to local Linux device
+    needs: build-and-push          # Дожидаемся успешной сборки и пуша образа
+    runs-on: self-hosted           # Запускаем на вашем локальном раннере
+    steps:
+      - name: Checkout code (optional)
+        uses: actions/checkout@v4  # Можно получить docker-compose.yml из репозитория
 
-    - name: Pull latest images and restart containers
-      run: |
-        cd /home/ваш_пользователь/path/to/your/compose/project  # Укажите путь, где лежит ваш docker-compose.yml
-        docker-compose pull api1 api2 api3 webapp1 webapp2 webapp3
-        docker-compose up -d --remove-orphans
-        docker system prune -f
+      - name: Pull latest images and restart containers
+        run: |
+          cd /home/ваш_пользователь/path/to/your/compose/project  # Укажите путь, где лежит ваш docker-compose.yml
+          docker-compose pull api1 api2 api3 webapp1 webapp2 webapp3
+          docker-compose up -d --remove-orphans
+          docker system prune -f
