@@ -67,15 +67,17 @@ jobs:
 
   deploy-on-local-linux:
     name: Deploy to local Linux device
-    needs: build-and-push          # Дожидаемся успешной сборки и пуша образа
-    runs-on: self-hosted           # Запускаем на вашем локальном раннере
+    needs: build-and-push
+    runs-on: self-hosted
     steps:
-      - name: Checkout code (optional)
-        uses: actions/checkout@v4  # Можно получить docker-compose.yml из репозитория
+      - name: Update compose files from repo
+        run: |
+          cd /home/d/labworks   # папка, где лежит копия репозитория
+          git pull origin main                 # скачиваем последние изменения (включая docker-compose-lb.yml)
 
       - name: Pull latest images and restart containers
         run: |
-          cd /home/ваш_пользователь/path/to/your/compose/project  # Укажите путь, где лежит ваш docker-compose.yml
-          docker-compose pull api1 api2 api3 webapp1 webapp2 webapp3
-          docker-compose up -d --remove-orphans
+          cd /home/d/labworks
+          docker-compose -f docker-compose-lb.yml pull
+          docker-compose -f docker-compose-lb.yml up -d --remove-orphans
           docker system prune -f
