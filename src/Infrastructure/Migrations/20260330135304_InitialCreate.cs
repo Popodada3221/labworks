@@ -22,9 +22,7 @@ namespace Infrastructure.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Price = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    Stock = table.Column<int>(type: "integer", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -33,12 +31,11 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "CreatedAt", "Description", "Name", "Price", "Stock" },
+                columns: new[] { "Id", "CreatedAt", "Name", "Price" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2026, 3, 30, 12, 49, 52, 390, DateTimeKind.Utc).AddTicks(9879), "Мощный ноутбук для работы", "Ноутбук Lenovo", 45000.00m, 10 },
-                    { 2, new DateTime(2026, 3, 30, 12, 49, 52, 390, DateTimeKind.Utc).AddTicks(9883), "Беспроводная мышь", "Мышь Logitech", 2500.00m, 50 },
-                    { 3, new DateTime(2026, 3, 30, 12, 49, 52, 390, DateTimeKind.Utc).AddTicks(9884), "Механическая клавиатура", "Клавиатура Mechanical", 8000.00m, 25 }
+                    { 1, new DateTime(2026, 3, 30, 13, 53, 4, 475, DateTimeKind.Utc).AddTicks(6194), "Ноутбук", 45000m },
+                    { 2, new DateTime(2026, 3, 30, 13, 53, 4, 475, DateTimeKind.Utc).AddTicks(6196), "Мышь", 1500m }
                 });
         }
 

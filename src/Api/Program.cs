@@ -1,109 +1,58 @@
-using Core.Interfaces;
-using Infrastructure.Data;
-using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Infrastructure.Data;
+using Core.Interfaces;
+using Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Настройка CORS
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// CORS для React
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowReactApp", policy =>
+    options.AddPolicy("ReactApp", policy =>
     {
-        policy.WithOrigins("http://localhost:3000", "http://localhost:8080", "http://localhost:80")
+        policy.WithOrigins("http://localhost:3000", "http://localhost:8080")
               .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+              .AllowAnyMethod();
     });
 });
 
-// Настройка контроллеров
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.PropertyNamingPolicy = null;
-    });
+// Получение строки подключения из переменной окружения
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
+    ?? builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? "Host=localhost;Database=productdb;Username=postgres;Password=postgres";
 
-// Настройка Swagger
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new() { Title = "Product API", Version = "v1" });
-});
-
-// Настройка Database
-var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
-if (string.IsNullOrEmpty(connectionString))
-{
-    // Для локальной разработки
-    connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-        ?? "Host=localhost;Database=productdb;Username=postgres;Password=postgres";
-}
-
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(connectionString, npgsqlOptions =>
-    {
-        npgsqlOptions.EnableRetryOnFailure(
-            maxRetryCount: 5,
-            maxRetryDelay: TimeSpan.FromSeconds(10),
-            errorCodesToAdd: null);
-    }));
-
-// Регистрация репозиториев
+builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
-// Health checks
-builder.Services.AddHealthChecks()
-    .AddDbContextCheck<AppDbContext>("database")
-    .AddCheck<SampleHealthCheck>("sample");
-
-// Настройка логирования
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
-builder.Logging.AddDebug();
+builder.Services.AddHealthChecks().AddDbContextCheck<AppDbContext>();
 
 var app = builder.Build();
 
-// Автоматическое применение миграций при запуске
+// Автоматические миграции
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    try
-    {
-        await dbContext.Database.MigrateAsync();
-        Console.WriteLine("Database migration completed successfully");
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error applying migrations: {ex.Message}");
-    }
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await db.Database.MigrateAsync();
 }
 
-// Configure pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-app.UseCors("AllowReactApp");
-app.UseAuthorization();
+app.UseCors("ReactApp");
 app.MapControllers();
 app.MapHealthChecks("/health");
 
-var host = Environment.GetEnvironmentVariable("HOSTNAME") ?? "Unknown";
-app.MapGet("/node-info", () => Results.Ok(new { node = host, timestamp = DateTime.UtcNow }));
+app.MapGet("/node-info", () => Results.Ok(new
+{
+    node = Environment.GetEnvironmentVariable("HOSTNAME") ?? "unknown",
+    timestamp = DateTime.UtcNow
+}));
 
 app.Run();
-
-public class SampleHealthCheck : IHealthCheck
-{
-    public Task<HealthCheckResult> CheckHealthAsync(
-        HealthCheckContext context,
-        CancellationToken cancellationToken = default)
-    {
-        return Task.FromResult(HealthCheckResult.Healthy("Application is healthy"));
-    }
-}

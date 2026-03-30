@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260330124952_InitialCreate")]
+    [Migration("20260330135304_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -38,9 +38,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -50,9 +47,6 @@ namespace Infrastructure.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("numeric(18,2)");
 
-                    b.Property<int>("Stock")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.ToTable("Products");
@@ -61,29 +55,16 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 3, 30, 12, 49, 52, 390, DateTimeKind.Utc).AddTicks(9879),
-                            Description = "Мощный ноутбук для работы",
-                            Name = "Ноутбук Lenovo",
-                            Price = 45000.00m,
-                            Stock = 10
+                            CreatedAt = new DateTime(2026, 3, 30, 13, 53, 4, 475, DateTimeKind.Utc).AddTicks(6194),
+                            Name = "Ноутбук",
+                            Price = 45000m
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2026, 3, 30, 12, 49, 52, 390, DateTimeKind.Utc).AddTicks(9883),
-                            Description = "Беспроводная мышь",
-                            Name = "Мышь Logitech",
-                            Price = 2500.00m,
-                            Stock = 50
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(2026, 3, 30, 12, 49, 52, 390, DateTimeKind.Utc).AddTicks(9884),
-                            Description = "Механическая клавиатура",
-                            Name = "Клавиатура Mechanical",
-                            Price = 8000.00m,
-                            Stock = 25
+                            CreatedAt = new DateTime(2026, 3, 30, 13, 53, 4, 475, DateTimeKind.Utc).AddTicks(6196),
+                            Name = "Мышь",
+                            Price = 1500m
                         });
                 });
 #pragma warning restore 612, 618

@@ -114,3 +114,4 @@ C:\Users\Daniil\Desktop\ОНИТ\LabWorks\src\Api\obj\Debug\net8.0\refint\Api.dl
 C:\Users\Daniil\Desktop\ОНИТ\LabWorks\src\Api\obj\Debug\net8.0\Api.pdb
 C:\Users\Daniil\Desktop\ОНИТ\LabWorks\src\Api\obj\Debug\net8.0\Api.genruntimeconfig.cache
 C:\Users\Daniil\Desktop\ОНИТ\LabWorks\src\Api\obj\Debug\net8.0\ref\Api.dll
+C:\Users\Daniil\Desktop\ОНИТ\LabWorks\src\Api\obj\Debug\net8.0\Api.sourcelink.json
