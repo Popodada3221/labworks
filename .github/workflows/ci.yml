@@ -78,6 +78,6 @@ jobs:
       - name: Pull latest images and restart containers
         run: |
           cd /home/d/labworks
-          docker compose -f docker-compose-lb.yml pull
-          docker compose -f docker-compose-lb.yml up -d --remove-orphans
+          docker-compose -f docker-compose-lb.yml pull
+          docker-compose -f docker-compose-lb.yml up -d --remove-orphans
           docker system prune -f
