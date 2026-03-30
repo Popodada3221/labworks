@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+    postgres:
+        image: postgres:15-alpine
+        container_name: lab_postgres
+        environment:
+            POSTGRES_DB: ${DB_NAME:-productdb}
+            POSTGRES_USER: ${DB_USER:-postgres}
+            POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+            - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+        networks:
+            - lab_network
+        healthcheck:
+            test: [ "CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-productdb}" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 10s
+
+    api:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: lab_api
+        environment:
+            - DB_CONNECTION_STRING=Host=postgres;Database=${DB_NAME:-productdb};Username=${DB_USER:-postgres};Password=${DB_PASSWORD:-postgres}
+            - ASPNETCORE_ENVIRONMENT=Production
+            - ASPNETCORE_URLS=http://+:8080
+        ports:
+            - "5000:8080"
+        depends_on:
+            postgres:
+                condition: service_healthy
+        networks:
+            - lab_network
+        healthcheck:
+            test: [ "CMD", "curl", "-f", "http://localhost:8080/health" ]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+            start_period: 40s
+        restart: unless-stopped
+
+networks:
+    lab_network:
+        driver: bridge
+
+volumes:
+    postgres_data:

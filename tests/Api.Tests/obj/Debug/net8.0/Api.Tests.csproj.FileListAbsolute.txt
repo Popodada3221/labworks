@@ -1,0 +1,7 @@
+C:\Users\Daniil\Desktop\ОНИТ\LabWorks\tests\Api.Tests\bin\Debug\net8.0\CoverletSourceRootsMapping_Api.Tests
+C:\Users\Daniil\Desktop\ОНИТ\LabWorks\tests\Api.Tests\obj\Debug\net8.0\Api.Tests.csproj.AssemblyReference.cache
+C:\Users\Daniil\Desktop\ОНИТ\LabWorks\tests\Api.Tests\obj\Debug\net8.0\MvcTestingAppManifest.json
+C:\Users\Daniil\Desktop\ОНИТ\LabWorks\tests\Api.Tests\obj\Debug\net8.0\Api.Tests.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Daniil\Desktop\ОНИТ\LabWorks\tests\Api.Tests\obj\Debug\net8.0\Api.Tests.AssemblyInfoInputs.cache
+C:\Users\Daniil\Desktop\ОНИТ\LabWorks\tests\Api.Tests\obj\Debug\net8.0\Api.Tests.AssemblyInfo.cs
+C:\Users\Daniil\Desktop\ОНИТ\LabWorks\tests\Api.Tests\obj\Debug\net8.0\Api.Tests.csproj.CoreCompileInputs.cache
