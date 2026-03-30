@@ -64,7 +64,7 @@ jobs:
             ${{ secrets.DOCKER_USERNAME }}/lab-api:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          
+
   deploy-on-local-linux:
   name: Deploy to local Linux device
   needs: build-and-push          # Дожидаемся успешной сборки и пуша образа
