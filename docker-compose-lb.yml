@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+    postgres:
+        image: postgres:15-alpine
+        container_name: postgres
+        environment:
+            POSTGRES_DB: ${DB_NAME:-productdb}
+            POSTGRES_USER: ${DB_USER:-postgres}
+            POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        networks:
+            - lb_network
+        healthcheck:
+            test: [ "CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-productdb}" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    api1:
+        build: .
+        container_name: api1
+        environment:
+            - DB_CONNECTION_STRING=Host=postgres;Database=${DB_NAME:-productdb};Username=${DB_USER:-postgres};Password=${DB_PASSWORD:-postgres}
+            - HOSTNAME=api-node-1
+        depends_on:
+            postgres:
+                condition: service_healthy
+        networks:
+            - lb_network
+
+    api2:
+        build: .
+        container_name: api2
+        environment:
+            - DB_CONNECTION_STRING=Host=postgres;Database=${DB_NAME:-productdb};Username=${DB_USER:-postgres};Password=${DB_PASSWORD:-postgres}
+            - HOSTNAME=api-node-2
+        depends_on:
+            postgres:
+                condition: service_healthy
+        networks:
+            - lb_network
+
+    api3:
+        build: .
+        container_name: api3
+        environment:
+            - DB_CONNECTION_STRING=Host=postgres;Database=${DB_NAME:-productdb};Username=${DB_USER:-postgres};Password=${DB_PASSWORD:-postgres}
+            - HOSTNAME=api-node-3
+        depends_on:
+            postgres:
+                condition: service_healthy
+        networks:
+            - lb_network
+
+    webapp1:
+        build: ./src/webapp
+        container_name: webapp1
+        networks:
+            - lb_network
+
+    webapp2:
+        build: ./src/webapp
+        container_name: webapp2
+        networks:
+            - lb_network
+
+    webapp3:
+        build: ./src/webapp
+        container_name: webapp3
+        networks:
+            - lb_network
+
+    nginx-lb:
+        image: nginx:alpine
+        container_name: nginx-lb
+        ports:
+            - "8080:80"
+        volumes:
+            - ./nginx-lb.conf:/etc/nginx/nginx.conf:ro # полная замена конфига
+        depends_on:
+            - api1
+            - api2
+            - api3
+            - webapp1
+            - webapp2
+            - webapp3
+        networks:
+            - lb_network
+        restart: always
+
+networks:
+    lb_network:
+        driver: bridge
+
+volumes:
+    postgres_data:
