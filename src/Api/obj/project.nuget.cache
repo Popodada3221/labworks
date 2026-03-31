@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "P2gNECgZ0/U=",
+  "dgSpecHash": "LoqfOshMXLk=",
   "success": true,
   "projectFilePath": "C:\\Users\\Daniil\\Desktop\\ОНИТ\\LabWorks\\src\\Api\\Api.csproj",
   "expectedPackageFiles": [
@@ -60,5 +60,15 @@
     "C:\\Users\\Daniil\\.nuget\\packages\\system.text.json\\8.0.0\\system.text.json.8.0.0.nupkg.sha512",
     "C:\\Users\\Daniil\\.nuget\\packages\\system.threading.channels\\6.0.0\\system.threading.channels.6.0.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "message": "Произошла ошибка при получении данных уязвимости пакета: Не удалось загрузить индекс службы для источника https://api.nuget.org/v3/index.json.",
+      "projectPath": "C:\\Users\\Daniil\\Desktop\\ОНИТ\\LabWorks\\src\\Api\\Api.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\Daniil\\Desktop\\ОНИТ\\LabWorks\\src\\Api\\Api.csproj",
+      "targetGraphs": []
+    }
+  ]
 }

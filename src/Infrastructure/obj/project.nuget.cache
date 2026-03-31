@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "/u/l5hRfQZE=",
+  "dgSpecHash": "wDewoRibcck=",
   "success": true,
   "projectFilePath": "C:\\Users\\Daniil\\Desktop\\ОНИТ\\LabWorks\\src\\Infrastructure\\Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -20,5 +20,15 @@
     "C:\\Users\\Daniil\\.nuget\\packages\\npgsql\\8.0.0\\npgsql.8.0.0.nupkg.sha512",
     "C:\\Users\\Daniil\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\8.0.0\\npgsql.entityframeworkcore.postgresql.8.0.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "message": "Произошла ошибка при получении данных уязвимости пакета: Не удалось загрузить индекс службы для источника https://api.nuget.org/v3/index.json.",
+      "projectPath": "C:\\Users\\Daniil\\Desktop\\ОНИТ\\LabWorks\\src\\Infrastructure\\Infrastructure.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\Daniil\\Desktop\\ОНИТ\\LabWorks\\src\\Infrastructure\\Infrastructure.csproj",
+      "targetGraphs": []
+    }
+  ]
 }
